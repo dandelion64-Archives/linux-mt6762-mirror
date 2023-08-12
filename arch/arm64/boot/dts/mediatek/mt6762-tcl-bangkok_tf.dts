@@ -1,0 +1,45 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Device Tree Source for TCL A3 (bangkok_tf)
+ *
+ * Copyright (c) 2023 Arseniy Velikanov <adomerlee@gmail.com>
+ * Copyright (C) 2023 Brandon Boese
+ */
+
+/dts-v1/;
+
+#include "mt6765.dtsi"
+#include "mt6765-bl-quirks.dtsi"
+
+/ {
+    model = "TCL A3";
+    compatible = "tcl,bangkok_tf", "mediatek,mt6762", "mediatek,mt6765";
+
+    chosen {
+        stdout-path = &framebuffer0;
+
+        /*
+         * HACK: Use display framebuffer setup by the lk bootloader for simplefb
+         * NOTE: only text is rendered on VT (TTY) as an unknown bit has to be flipped to disable
+         *        image compression!
+         */
+        framebuffer0: framebuffer@7dad0000 {
+            compatible = "simple-framebuffer";
+            reg = <0 0x7dad0000 0 0xe30000>;
+            status = "okay";
+            width = <720>;
+            height = <1440>;
+            stride = <((720 + 16) * 4)>;
+            format = "a8r8g8b8";
+        };
+    };
+
+    /* The following are required by stock bootloader to merge with minimal DTBO */
+    gpio@10005000 {
+        linux,phandle = <0xdead>;
+        phandle = <0xdead>;
+    };
+    __symbols__ {
+        gpio = "/gpio@10005000";
+    };
+};
