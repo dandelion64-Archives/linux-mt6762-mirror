@@ -1,0 +1,174 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * Copyright (c) 2023 Arseniy Velikanov <adomerlee@gmail.com>
+ */
+
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+
+/ {
+    compatible = "mediatek,mt6765";
+    interrupt-parent = <&sysirq>;
+    #address-cells = <2>;
+    #size-cells = <2>;
+
+    psci {
+        compatible = "arm,psci-1.0";
+        method = "smc";
+    };
+
+    cpus {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        cpu0: cpu@0 {
+            device_type = "cpu";
+            compatible = "arm,cortex-a53";
+	        reg = <0x000>;
+            enable-method = "psci";
+        };
+
+        cpu1: cpu@1 {
+            device_type = "cpu";
+            compatible = "arm,cortex-a53";
+	        reg = <0x001>;
+            enable-method = "psci";
+        };
+
+        cpu2: cpu@2 {
+            device_type = "cpu";
+            compatible = "arm,cortex-a53";
+            enable-method = "psci";
+            reg = <0x002>;
+        };
+
+        cpu3: cpu@3 {
+            device_type = "cpu";
+            compatible = "arm,cortex-a53";
+	        reg = <0x003>;
+            enable-method = "psci";
+        };
+
+        cpu4: cpu@100 {
+            device_type = "cpu";
+            compatible = "arm,cortex-a53";
+	        reg = <0x100>;
+            enable-method = "psci";
+        };
+
+        cpu5: cpu@101 {
+            device_type = "cpu";
+            compatible = "arm,cortex-a53";
+	        reg = <0x101>;
+            enable-method = "psci";
+        };
+
+        cpu6: cpu@102 {
+            device_type = "cpu";
+            compatible = "arm,cortex-a53";
+	        reg = <0x102>;
+            enable-method = "psci";
+        };
+
+        cpu7: cpu@103 {
+            device_type = "cpu";
+            compatible = "arm,cortex-a53";
+	        reg = <0x103>;
+            enable-method = "psci";
+        };
+    };
+
+    cpu-map {
+        cluster0 {
+            core0 {
+                cpu = <&cpu0>;
+            };
+            core1 {
+                cpu = <&cpu1>;
+            };
+            core2 {
+                cpu = <&cpu2>;
+            };
+            core3 {
+                cpu = <&cpu3>;
+            };
+        };
+
+        cluster1 {
+            core0 {
+                cpu = <&cpu4>;
+            };
+            core1 {
+                cpu = <&cpu5>;
+            };
+            core2 {
+                cpu = <&cpu6>;
+            };
+            core3 {
+                cpu = <&cpu7>;
+            };
+        };
+    };
+
+    chosen {
+        #address-cells = <2>;
+        #size-cells = <2>;
+        ranges;
+
+        /*
+         * FIXME: drop clk_ignore_unused, keeps getting watchdog rebooted without it for now!
+         */
+        bootargs = "clk_ignore_unused";
+    };
+
+    reserved-memory {
+        #address-cells = <2>;
+        #size-cells = <2>;
+        ranges;
+
+        atf_mem: memory@54600000 {
+            reg = <0 0x54600000 0 0x50000>;
+            no-map;
+        };
+    };
+
+    memory@40000000 {
+        device_type = "memory";
+        /* We expect the bootloader to fill in the reg */
+        reg = <0 0x40000000 0 0>;
+    };
+
+    timer {
+        compatible = "arm,armv8-timer";
+        interrupt-parent = <&gic>;
+        interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
+                     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
+                     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
+                     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
+    };
+
+    soc {
+        #address-cells = <2>;
+        #size-cells = <2>;
+        compatible = "simple-bus";
+        ranges;
+
+        gic: interrupt-controller@0c000000 {
+            compatible = "arm,gic-v3";
+            reg = <0 0x0c000000 0 0x40000>,  /* GICD */
+                  <0 0x0c100000 0 0x20000>;  /* GICR */
+            #interrupt-cells = <3>;
+            interrupt-parent = <&gic>;
+            interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
+            interrupt-controller;
+        };
+
+        sysirq: intpol-controller@10200a80 {
+            compatible = "mediatek,mt6577-sysirq";
+            reg = <0 0x10200a80 0 0x50>; /* INTPOL */
+            #interrupt-cells = <3>;
+            interrupt-parent = <&gic>;
+            interrupt-controller;
+        };
+    };
+};
