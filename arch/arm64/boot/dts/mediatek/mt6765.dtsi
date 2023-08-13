@@ -5,6 +5,7 @@
 
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/clock/mt6765-clk.h>
 
 / {
     compatible = "mediatek,mt6765";
@@ -161,6 +162,12 @@
             interrupt-parent = <&gic>;
             interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
             interrupt-controller;
+        };
+
+        topckgen: syscon@10000000 {
+            compatible = "mediatek,mt6765-topckgen", "syscon";
+            reg = <0 0x10000000 0 0x1000>;
+            #clock-cells = <1>;
         };
 
         sysirq: intpol-controller@10200a80 {
