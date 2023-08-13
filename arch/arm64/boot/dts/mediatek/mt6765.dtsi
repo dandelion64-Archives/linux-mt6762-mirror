@@ -171,6 +171,12 @@
             #clock-cells = <1>;
         };
 
+        infracfg: syscon@10001000 {
+            compatible = "mediatek,mt6765-infracfg", "syscon";
+            reg = <0 0x10001000 0 0x1000>;
+            interrupts = <GIC_SPI 147 IRQ_TYPE_EDGE_RISING>;
+            #clock-cells = <1>;
+        };
 
         usb2: usb@11200000 {
             compatible = "mediatek,mtk-musb";
