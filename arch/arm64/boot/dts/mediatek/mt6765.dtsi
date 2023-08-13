@@ -225,6 +225,28 @@
             };
         };
 
+        uart0: serial@11002000 {
+            compatible = "mediatek,mt6765-uart",
+                         "mediatek,mt6577-uart";
+            reg = <0 0x11002000 0 0x400>;
+            interrupts = <GIC_SPI 91 IRQ_TYPE_LEVEL_LOW>;
+            clocks = <&infracfg CLK_IFR_UART0>,
+                     <&infracfg CLK_IFR_AP_DMA>;
+            clock-names = "baud", "bus";
+            status = "disabled";
+        };
+
+        uart1: serial@11003000 {
+            compatible = "mediatek,mt6765-uart",
+                         "mediatek,mt6577-uart";
+            reg = <0 0x11003000 0 0x400>;
+            interrupts = <GIC_SPI 92 IRQ_TYPE_LEVEL_LOW>;
+            clocks = <&infracfg CLK_IFR_UART1>,
+                     <&infracfg CLK_IFR_AP_DMA>;
+            clock-names = "baud", "bus";
+            status = "disabled";
+        };
+
         sysirq: intpol-controller@10200a80 {
             compatible = "mediatek,mt6577-sysirq";
             reg = <0 0x10200a80 0 0x50>; /* INTPOL */
