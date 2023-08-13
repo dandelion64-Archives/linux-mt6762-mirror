@@ -183,6 +183,12 @@
             reg = <0 0x10003000 0 0x1000>;
         };
 
+        apmixed: syscon@1000c000 {
+            compatible = "mediatek,mt6765-apmixedsys", "syscon";
+            reg = <0 0x1000c000 0 0x1000>;
+            #clock-cells = <1>;
+        };
+
         usb2: usb@11200000 {
             compatible = "mediatek,mtk-musb";
             reg = <0 0x11200000 0 0x1000>;
