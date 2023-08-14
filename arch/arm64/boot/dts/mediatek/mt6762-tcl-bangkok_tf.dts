@@ -10,6 +10,7 @@
 
 #include "mt6765.dtsi"
 #include "mt6765-bl-quirks.dtsi"
+#include "mt6357.dtsi"
 
 / {
     model = "TCL A3";
@@ -44,6 +45,10 @@
     };
 };
 
+&pwrap {
+    status = "okay";
+};
+
 &usb2 {
     status = "okay";
 
@@ -55,4 +60,20 @@
 
 &u2phy {
     status = "okay";
+};
+
+&mmc1 {
+    status = "okay";
+
+    vmmc-supply = <&mt6357_vmch_reg>;
+    vqmmc-supply = <&mt6357_vmc_reg>;
+
+    bus-width = <4>;
+    max-frequency = <20000000>;
+    cap-sd-highspeed;
+    sd-uhs-sdr12;
+    sd-uhs-sdr25;
+    sd-uhs-sdr50;
+    sd-uhs-sdr104;
+    sd-uhs-ddr50;
 };
