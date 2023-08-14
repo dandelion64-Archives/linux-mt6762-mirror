@@ -231,6 +231,17 @@
             interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
         };
 
+        pwrap: pwrap@1000d000 {
+            compatible = "mediatek,mt6765-pwrap";
+            reg = <0 0x1000d000 0 0x1000>;
+            reg-names = "pwrap";
+            interrupts = <GIC_SPI 179 IRQ_TYPE_LEVEL_HIGH>;
+            clocks = <&infracfg CLK_IFR_PMIC_AP>,
+                     <&topckgen CLK_TOP_CLK26M>;
+            clock-names = "wrap", "spi";
+            status = "disabled";
+        };
+
         usb2: usb@11200000 {
             compatible = "mediatek,mtk-musb";
             reg = <0 0x11200000 0 0x1000>;
