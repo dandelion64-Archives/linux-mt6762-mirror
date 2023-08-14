@@ -196,6 +196,35 @@
             interrupts = <GIC_SPI 139 IRQ_TYPE_LEVEL_LOW>;
         };
 
+        // NOTE: downstream uses different iocfg naming
+        pio: pio@10005000 {
+            compatible = "mediatek,mt6765-pinctrl";
+            reg = <0 0x10005000 0 0x1000>,
+                  <0 0x10002C00 0 0x200>,
+                  <0 0x10002800 0 0x200>,
+                  <0 0x10002A00 0 0x200>,
+                  <0 0x10002000 0 0x200>,
+                  <0 0x10002200 0 0x200>,
+                  <0 0x10002400 0 0x200>,
+                  <0 0x10002600 0 0x200>,
+                  <0 0x1000b000 0 0x1000>;
+            reg-names = "iocfg0", /* pinctrl driver use gpio base as iocfg (???) */
+                        "iocfg1",
+                        "iocfg2",
+                        "iocfg3",
+                        "iocfg4",
+                        "iocfg5",
+                        "iocfg6",
+                        "iocfg7",
+                        "eint";
+            gpio-controller;
+            #gpio-cells = <2>;
+            gpio-ranges = <&pio 0 0 179>;
+            interrupt-controller;
+            #interrupt-cells = <2>;
+            interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
+        };
+
         usb2: usb@11200000 {
             compatible = "mediatek,mtk-musb";
             reg = <0 0x11200000 0 0x1000>;
