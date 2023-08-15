@@ -26,7 +26,7 @@
          */
         framebuffer0: framebuffer@7dad0000 {
             compatible = "simple-framebuffer";
-            reg = <0 0x7dad0000 0 0xe30000>;
+            reg = <0 0x7dad0000 0 (720 * 1440 * 4)>;
             status = "okay";
             width = <720>;
             height = <1440>;
