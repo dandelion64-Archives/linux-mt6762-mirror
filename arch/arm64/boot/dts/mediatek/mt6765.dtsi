@@ -228,6 +228,12 @@
             #clock-cells = <1>;
         };
 
+        audio: syscon@11220000 {
+            compatible = "mediatek,mt6765-audsys", "syscon";
+            reg = <0 0x11220000 0 0x1000>;
+            #clock-cells = <1>;
+        };
+
         // TODO: Add reset support
         watchdog: watchdog@10007000 {
             compatible = "mediatek,mt6589-wdt";
