@@ -636,6 +636,17 @@
             status = "disabled";
         };
 
+        efuse: efuse@11c50000 {
+            compatible = "mediatek,mt6765-efuse";
+            reg = <0 0x11c50000 0 0x1000>;
+            #address-cells = <1>;
+            #size-cells = <1>;
+
+            thermal_calibration: calib@190 {
+                reg = <0x190 0xc>;
+            };
+        };
+
         uart0: serial@11002000 {
             compatible = "mediatek,mt6765-uart",
                          "mediatek,mt6577-uart";
