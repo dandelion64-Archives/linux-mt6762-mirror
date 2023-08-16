@@ -239,6 +239,31 @@ enum mtk_thermal_version {
 /* The calibration coefficient of sensor  */
 #define MT7622_CALIBRATION	165
 
+/* MT6765 thermal sensors */
+#define MT6765_TS1	0
+#define MT6765_TS2	1
+#define MT6765_TS3	2
+#define MT6765_TS4	3
+#define MT6765_TS5	4
+
+/* AUXADC channel is used for the temperature sensors */
+#define MT6765_TEMP_AUXADC_CHANNEL	11
+
+/* The total number of temperature sensors in the MT6765 */
+#define MT6765_NUM_SENSORS	5
+
+/* The number of banks in the MT8183 */
+#define MT6765_NUM_ZONES               1
+
+/* The number of sensing points per bank */
+#define MT6765_NUM_SENSORS_PER_ZONE	 5
+
+/* The number of controller in the MT6765 */
+#define MT6765_NUM_CONTROLLER		1
+
+/* The calibration coefficient of sensor  */
+#define MT6765_CALIBRATION	153
+
 /* MT8183 thermal sensors */
 #define MT8183_TS1	0
 #define MT8183_TS2	1
@@ -356,6 +381,10 @@ static const int mt8183_bank_data[MT8183_NUM_SENSORS] = {
 	MT8183_TS1, MT8183_TS2, MT8183_TS3, MT8183_TS4, MT8183_TS5, MT8183_TSABB
 };
 
+static const int mt6765_bank_data[MT6765_NUM_SENSORS] = {
+	MT6765_TS1, MT6765_TS2, MT6765_TS3, MT6765_TS4, MT6765_TS5
+};
+
 static const int mt8183_msr[MT8183_NUM_SENSORS_PER_ZONE] = {
 	TEMP_MSR0_1, TEMP_MSR1_1, TEMP_MSR2_1, TEMP_MSR1, TEMP_MSR0, TEMP_MSR3_1
 };
@@ -368,8 +397,14 @@ static const int mt8183_adcpnp[MT8183_NUM_SENSORS_PER_ZONE] = {
 static const int mt8183_mux_values[MT8183_NUM_SENSORS] = { 0, 1, 2, 3, 4, 0 };
 static const int mt8183_tc_offset[MT8183_NUM_CONTROLLER] = {0x0, 0x100};
 
+static const int mt6765_mux_values[MT6765_NUM_SENSORS] = { 0, 1, 2, 3, 4 };
+static const int mt6765_tc_offset[MT6765_NUM_CONTROLLER] = { 0x0 };
+
 static const int mt8183_vts_index[MT8183_NUM_SENSORS] = {
 	VTS1, VTS2, VTS3, VTS4, VTS5, VTSABB
+};
+static const int mt6765_vts_index[MT6765_NUM_SENSORS] = {
+	VTS1, VTS2, VTS3, VTS4, VTS5
 };
 
 /* MT8173 thermal sensor data */
@@ -666,6 +701,28 @@ static const struct mtk_thermal_data mt8183_thermal_data = {
 	.msr = mt8183_msr,
 	.adcpnp = mt8183_adcpnp,
 	.sensor_mux_values = mt8183_mux_values,
+	.version = MTK_THERMAL_V1,
+};
+
+static const struct mtk_thermal_data mt6765_thermal_data = {
+	.auxadc_channel = MT6765_TEMP_AUXADC_CHANNEL,
+	.num_banks = MT6765_NUM_ZONES,
+	.num_sensors = MT6765_NUM_SENSORS,
+	.vts_index = mt6765_vts_index,
+	.cali_val = MT6765_CALIBRATION,
+	.num_controller = MT6765_NUM_CONTROLLER,
+	.controller_offset = mt6765_tc_offset,
+	.need_switch_bank = false,
+	.bank_data = {
+		{
+			.num_sensors = 5,
+			.sensors = mt6765_bank_data,
+		},
+	},
+
+	.msr = mt8183_msr,
+	.adcpnp = mt8183_adcpnp,
+	.sensor_mux_values = mt6765_mux_values,
 	.version = MTK_THERMAL_V1,
 };
 
@@ -1142,6 +1199,10 @@ static const struct of_device_id mtk_thermal_of_match[] = {
 	{
 		.compatible = "mediatek,mt2712-thermal",
 		.data = (void *)&mt2712_thermal_data,
+	},
+	{
+		.compatible = "mediatek,mt6765-thermal",
+		.data = (void *)&mt6765_thermal_data,
 	},
 	{
 		.compatible = "mediatek,mt7622-thermal",
