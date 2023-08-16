@@ -503,6 +503,55 @@
             #interrupt-cells = <2>;
             interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
 
+            i2c0_default: i2c0-default-pins {
+                pins-sda-scl {
+                    pinmux = <PINMUX_GPIO82__FUNC_SDA0>,
+                             <PINMUX_GPIO83__FUNC_SCL0>;
+                };
+            };
+
+            i2c1_default: i2c1-default-pins {
+                pins-sda-scl {
+                    pinmux = <PINMUX_GPIO81__FUNC_SDA1>,
+                             <PINMUX_GPIO84__FUNC_SCL1>;
+                };
+            };
+
+            i2c2_default: i2c2-default-pins {
+                pins-sda-scl {
+                    pinmux = <PINMUX_GPIO104__FUNC_SDA2>,
+                             <PINMUX_GPIO103__FUNC_SCL2>;
+                };
+            };
+
+            i2c3_default: i2c3-default-pins {
+                pins-sda-scl {
+                    pinmux = <PINMUX_GPIO51__FUNC_SDA3>,
+                             <PINMUX_GPIO50__FUNC_SCL3>;
+                };
+            };
+
+            i2c4_default: i2c4-default-pins {
+                pins-sda-scl {
+                    pinmux = <PINMUX_GPIO106__FUNC_SDA4>,
+                             <PINMUX_GPIO105__FUNC_SCL4>;
+                };
+            };
+
+            i2c5_default: i2c5-default-pins {
+                pins-sda-scl {
+                    pinmux = <PINMUX_GPIO49__FUNC_SDA5>,
+                             <PINMUX_GPIO48__FUNC_SCL5>;
+                };
+            };
+
+            i2c6_default: i2c6-default-pins {
+                pins-sda-scl {
+                    pinmux = <PINMUX_GPIO162__FUNC_SDA6>,
+                             <PINMUX_GPIO161__FUNC_SCL6>;
+                };
+            };
+
             mmc0_pins_default: mmc0-default-pins {
                 pins-cmd-clk-dat-rst {
                     pinmux = <PINMUX_GPIO122__FUNC_AUX2_MSDC0_CMD>,
@@ -622,53 +671,143 @@
             status = "disabled";
         };
 
-        // TODO: Use hardware i2c controller
-        i2c0: i2c@0 {
-            compatible = "i2c-gpio";
-            sda-gpios = <&pio 82 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-            scl-gpios = <&pio 83 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+        i2c0: i2c@11007000 {
+            compatible = "mediatek,mt6765-i2c";
+            reg = <0 0x11007000 0 0x1000>,
+                  <0 0x11000080 0 0x0080>;
+
+            interrupts = <GIC_SPI 84 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&infracfg CLK_IFR_I2C_AP>, <&infracfg CLK_IFR_AP_DMA>;
+            clock-names = "main", "dma";
+            clock-div = <5>;
+
+            pinctrl-names = "default";
+            pinctrl-0 = <&i2c0_default>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+
             status = "disabled";
         };
 
-        i2c1: i2c@1 {
-            compatible = "i2c-gpio";
-            sda-gpios = <&pio 81 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-            scl-gpios = <&pio 84 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+        i2c1: i2c@11008000 {
+            compatible = "mediatek,mt6765-i2c";
+            reg = <0 0x11008000 0 0x1000>,
+                  <0 0x11000100 0 0x0080>;
+
+            interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&infracfg CLK_IFR_I2C_AP>, <&infracfg CLK_IFR_AP_DMA>;
+            clock-names = "main", "dma";
+            clock-div = <5>;
+
+            pinctrl-names = "default";
+            pinctrl-0 = <&i2c1_default>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+
             status = "disabled";
         };
 
-        i2c2: i2c@2 {
-            compatible = "i2c-gpio";
-            sda-gpios = <&pio 104 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-            scl-gpios = <&pio 103 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+        i2c2: i2c@11009000 {
+            compatible = "mediatek,mt6765-i2c";
+            reg = <0 0x11009000 0 0x1000>,
+                  <0 0x11000180 0 0x0180>;
+
+            interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&infracfg CLK_IFR_I2C_AP>, <&infracfg CLK_IFR_AP_DMA>;
+            clock-names = "main", "dma";
+            clock-div = <5>;
+
+            pinctrl-names = "default";
+            pinctrl-0 = <&i2c2_default>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+
             status = "disabled";
         };
 
-        i2c3: i2c@3 {
-            compatible = "i2c-gpio";
-            sda-gpios = <&pio 51 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-            scl-gpios = <&pio 50 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+        i2c3: i2c@1100f000 {
+            compatible = "mediatek,mt6765-i2c";
+            reg = <0 0x1100f000 0 0x1000>,
+                  <0 0x11000300 0 0x0100>;
+
+            interrupts = <GIC_SPI 87 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&infracfg CLK_IFR_I2C_AP>, <&infracfg CLK_IFR_AP_DMA>;
+            clock-names = "main", "dma";
+            clock-div = <5>;
+
+            pinctrl-names = "default";
+            pinctrl-0 = <&i2c3_default>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+
             status = "disabled";
         };
 
-        i2c4: i2c@4 {
-            compatible = "i2c-gpio";
-            sda-gpios = <&pio 106 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-            scl-gpios = <&pio 105 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+        i2c4: i2c@11011000 {
+            compatible = "mediatek,mt6765-i2c";
+            reg = <0 0x11011000 0 0x1000>,
+                  <0 0x11000400 0 0x0180>;
+
+            interrupts = <GIC_SPI 88 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&infracfg CLK_IFR_I2C_AP>, <&infracfg CLK_IFR_AP_DMA>;
+            clock-names = "main", "dma";
+            clock-div = <5>;
+
+            pinctrl-names = "default";
+            pinctrl-0 = <&i2c4_default>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+
             status = "disabled";
         };
 
-        i2c5: i2c@5 {
-            compatible = "i2c-gpio";
-            sda-gpios = <&pio 49 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-            scl-gpios = <&pio 48 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+        i2c5: i2c@11016000 {
+            compatible = "mediatek,mt6765-i2c";
+            reg = <0 0x11016000 0 0x1000>,
+                  <0 0x11000580 0 0x0080>;
+
+            interrupts = <GIC_SPI 130 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&infracfg CLK_IFR_I2C_AP>, <&infracfg CLK_IFR_AP_DMA>;
+            clock-names = "main", "dma";
+            clock-div = <5>;
+
+            pinctrl-names = "default";
+            pinctrl-0 = <&i2c5_default>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+
             status = "disabled";
         };
 
-        i2c6: i2c@6 {
-            compatible = "i2c-gpio";
-            sda-gpios = <&pio 162 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-            scl-gpios = <&pio 161 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+        i2c6: i2c@1100d000 {
+            compatible = "mediatek,mt6765-i2c";
+            reg = <0 0x1100d000 0 0x1000>,
+                  <0 0x11000600 0 0x0080>;
+
+            interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&infracfg CLK_IFR_I2C_AP>, <&infracfg CLK_IFR_AP_DMA>;
+            clock-names = "main", "dma";
+            clock-div = <5>;
+
+            pinctrl-names = "default";
+            pinctrl-0 = <&i2c6_default>;
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+
             status = "disabled";
         };
 
