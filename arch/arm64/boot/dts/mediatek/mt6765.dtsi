@@ -312,6 +312,18 @@
             mediatek,smi = <&smi_common>;
         };
 
+        m4u: iommu@10205000 {
+            compatible = "mediatek,mt6765-m4u";
+            reg = <0 0x10205000 0 0x1000>;
+
+            interrupts = <GIC_SPI 158 IRQ_TYPE_LEVEL_LOW>;
+
+            mediatek,larbs = <&smi_larb0>, <&smi_larb1>,
+                             <&smi_larb2>, <&smi_larb3>;
+
+            #iommu-cells = <1>;
+        };
+
         // TODO: Add reset support
         watchdog: watchdog@10007000 {
             compatible = "mediatek,mt6589-wdt";
