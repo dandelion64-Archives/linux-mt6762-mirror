@@ -7,6 +7,7 @@
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/clock/mt6765-clk.h>
 #include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/memory/mediatek,mt6765-m4u.h>
 #include <dt-bindings/phy/phy.h>
 #include <dt-bindings/power/mt6765-power.h>
 #include <dt-bindings/pinctrl/mediatek,mt6765-pinfunc.h>
@@ -322,6 +323,149 @@
                              <&smi_larb2>, <&smi_larb3>;
 
             #iommu-cells = <1>;
+        };
+
+        disp_pwm: pwm@1100e000 {
+            compatible = "mediatek,mt6765-disp-pwm";
+            reg = <0 0x1100e000 0 0x1000>;
+
+            interrupts = <GIC_SPI 109 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&infracfg CLK_IFR_DISP_PWM>,
+                     <&topckgen CLK_TOP_DISP_PWM_SEL>;
+            clock-names = "main", "mm";
+
+            power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
+
+            #pwm-cells = <2>;
+
+            status = "disabled";
+        };
+
+        ovl0: ovl@1400b000 {
+            compatible = "mediatek,mt6765-disp-ovl";
+            reg = <0 0x1400b000 0 0x1000>;
+
+            interrupts = <GIC_SPI 217 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&mmsys CLK_MM_DISP_OVL0>;
+
+            power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
+
+            iommus = <&m4u M4U_PORT_DISP_OVL0>;
+
+            status = "disabled";
+        };
+
+        ovl_2l0: ovl@1400c000 {
+            compatible = "mediatek,mt675-disp-ovl-2l";
+            reg = <0 0x1400c000 0 0x1000>;
+
+            interrupts = <GIC_SPI 229 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&mmsys CLK_MM_DISP_OVL0_2L>;
+
+            power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
+
+            iommus = <&m4u M4U_PORT_DISP_2L_OVL0>;
+
+            status = "disabled";
+        };
+
+        disp_rdma0: dma-controller@1400d000 {
+            compatible = "mediatek,mt6765-disp-rdma";
+            reg = <0 0x1400d000 0 0x1000>;
+
+            interrupts = <GIC_SPI 218 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&mmsys CLK_MM_MDP_RDMA0>;
+
+            power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
+
+            iommus = <&m4u M4U_PORT_DISP_RDMA0>;
+
+            status = "disabled";
+        };
+
+        color: color@1400f000 {
+            compatible = "mediatek,mt6765-disp-color";
+            reg = <0 0x1400f000 0 0x1000>;
+
+            interrupts = <GIC_SPI 220 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&mmsys CLK_MM_DISP_COLOR0>;
+
+            power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
+
+            status = "disabled";
+        };
+
+        dither: dither@14013000 {
+            compatible = "mediatek,mt6765-disp-dither";
+            reg = <0 0x14013000 0 0x1000>;
+
+            interrupts = <GIC_SPI 224 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&mmsys CLK_MM_DISP_DITHER0>;
+
+            power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
+
+            status = "disabled";
+        };
+
+        dsi: dsi@14014000 {
+            compatible = "mediatek,mt6765-dsi";
+            reg = <0 0x14014000 0 0x1000>;
+
+            interrupts = <GIC_SPI 225 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&mmsys CLK_MM_DSI0>,
+                     <&mmsys CLK_MM_DIG_DSI>,
+                     <&mipi_tx>;
+            clock-names = "engine", "digital", "hs";
+
+            power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
+
+            phys = <&mipi_tx>;
+            phy-names = "dphy";
+
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            status = "disabled";
+
+            port {
+                dsi0_out: endpoint { };
+            };
+        };
+
+        disp_mutex: mutex@14001000 {
+            compatible = "mediatek,mt6765-disp-mutex";
+            reg = <0 0x14001000 0 0x1000>;
+
+            interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_LOW>;
+
+            clocks = <&clk32k>;
+
+            power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
+
+            status = "disabled";
+        };
+
+        mipi_tx: dsi-phy@11c80000 {
+            compatible = "mediatek,mt6765-mipi-tx";
+            reg = <0 0x11c80000 0 0x1000>;
+
+            clocks = <&apmixed CLK_APMIXED_MIPID0_26M>;
+
+            power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
+
+            #clock-cells = <0>;
+            clock-output-names = "dsi_mppll";
+
+            #phy-cells = <0>;
+
+            status = "disabled";
         };
 
         // TODO: Add reset support
