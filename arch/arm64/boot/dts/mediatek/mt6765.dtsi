@@ -9,6 +9,7 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/memory/mediatek,mt6765-m4u.h>
 #include <dt-bindings/phy/phy.h>
+#include <dt-bindings/thermal/thermal.h>
 #include <dt-bindings/power/mt6765-power.h>
 #include <dt-bindings/pinctrl/mediatek,mt6765-pinfunc.h>
 
@@ -32,6 +33,7 @@
             compatible = "arm,cortex-a53";
 	        reg = <0x000>;
             enable-method = "psci";
+            #cooling-cells = <2>;
         };
 
         cpu1: cpu@1 {
@@ -39,13 +41,15 @@
             compatible = "arm,cortex-a53";
 	        reg = <0x001>;
             enable-method = "psci";
+            #cooling-cells = <2>;
         };
 
         cpu2: cpu@2 {
             device_type = "cpu";
             compatible = "arm,cortex-a53";
-            enable-method = "psci";
             reg = <0x002>;
+            enable-method = "psci";
+            #cooling-cells = <2>;
         };
 
         cpu3: cpu@3 {
@@ -53,6 +57,7 @@
             compatible = "arm,cortex-a53";
 	        reg = <0x003>;
             enable-method = "psci";
+            #cooling-cells = <2>;
         };
 
         cpu4: cpu@100 {
@@ -60,6 +65,7 @@
             compatible = "arm,cortex-a53";
 	        reg = <0x100>;
             enable-method = "psci";
+            #cooling-cells = <2>;
         };
 
         cpu5: cpu@101 {
@@ -67,6 +73,7 @@
             compatible = "arm,cortex-a53";
 	        reg = <0x101>;
             enable-method = "psci";
+            #cooling-cells = <2>;
         };
 
         cpu6: cpu@102 {
@@ -74,6 +81,7 @@
             compatible = "arm,cortex-a53";
 	        reg = <0x102>;
             enable-method = "psci";
+            #cooling-cells = <2>;
         };
 
         cpu7: cpu@103 {
@@ -81,6 +89,7 @@
             compatible = "arm,cortex-a53";
 	        reg = <0x103>;
             enable-method = "psci";
+            #cooling-cells = <2>;
         };
     };
 
@@ -644,6 +653,70 @@
 
             thermal_calibration: calib@190 {
                 reg = <0x190 0xc>;
+            };
+        };
+
+        thermal: thermal@1100b000 {
+            #thermal-sensor-cells = <1>;
+            compatible = "mediatek,mt6765-thermal";
+            reg = <0 0x1100b000 0 0x1000>;
+
+            clocks = <&infracfg CLK_IFR_THERM>,
+                     <&infracfg CLK_IFR_AUXADC>;
+            clock-names = "therm", "auxadc";
+
+            interrupts = <GIC_SPI 78 IRQ_TYPE_LEVEL_LOW>;
+
+            mediatek,auxadc = <&auxadc>;
+            mediatek,apmixedsys = <&apmixed>;
+
+            nvmem-cells = <&thermal_calibration>;
+            nvmem-cell-names = "calibration-data";
+        };
+
+        thermal_zones: thermal-zones {
+            cpu_thermal: cpu-thermal {
+                polling-delay-passive = <100>;
+                polling-delay = <500>;
+                thermal-sensors = <&thermal 0>;
+                sustainable-power = <5000>;
+
+                trips {
+                    threshold: trip-point0 {
+                        temperature = <68000>;
+                        hysteresis = <2000>;
+                        type = "passive";
+                    };
+
+                    target: trip-point1 {
+                        temperature = <80000>;
+                        hysteresis = <2000>;
+                        type = "passive";
+                    };
+
+                    cpu_crit: cpu-crit {
+                        temperature = <115000>;
+                        hysteresis = <2000>;
+                        type = "critical";
+                    };
+                };
+
+                cooling-maps {
+                    map0 {
+                        trip = <&target>;
+                        cooling-device = <&cpu0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                                         <&cpu1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                                         <&cpu2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                                         <&cpu3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+                    };
+                    map1 {
+                        trip = <&target>;
+                        cooling-device = <&cpu4 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                                         <&cpu5 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                                         <&cpu6 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+                                         <&cpu7 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+                    };
+                };
             };
         };
 
