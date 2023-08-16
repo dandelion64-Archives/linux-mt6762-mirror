@@ -8,6 +8,7 @@
 #include <dt-bindings/clock/mt6765-clk.h>
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/phy/phy.h>
+#include <dt-bindings/power/mt6765-power.h>
 #include <dt-bindings/pinctrl/mediatek,mt6765-pinfunc.h>
 
 / {
@@ -436,6 +437,90 @@
             sda-gpios = <&pio 162 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
             scl-gpios = <&pio 161 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
             status = "disabled";
+        };
+
+        scpsys: syscon@10006000 {
+            compatible = "mediatek,mt6765-scpsys", "syscon", "simple-mfd";
+            reg = <0 0x10006000 0 0x1000>;
+
+            spm: power-controller {
+                compatible = "mediatek,mt6765-power-controller";
+                #address-cells = <1>;
+                #size-cells = <0>;
+                #power-domain-cells = <1>;
+
+                power-domain@MT6765_POWER_DOMAIN_MD1 {
+                    reg = <MT6765_POWER_DOMAIN_MD1>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_DISP {
+                    reg = <MT6765_POWER_DOMAIN_DISP>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_CONN {
+                    reg = <MT6765_POWER_DOMAIN_CONN>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_MFG {
+                    reg = <MT6765_POWER_DOMAIN_MFG>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_MFG_ASYNC {
+                    reg = <MT6765_POWER_DOMAIN_MFG_ASYNC>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_MFG_CORE0 {
+                    reg = <MT6765_POWER_DOMAIN_MFG_CORE0>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_ISP {
+                    reg = <MT6765_POWER_DOMAIN_ISP>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_VDEC {
+                    reg = <MT6765_POWER_DOMAIN_VDEC>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_VENC {
+                    reg = <MT6765_POWER_DOMAIN_VENC>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_VCODEC {
+                    reg = <MT6765_POWER_DOMAIN_VCODEC>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_MM {
+                    reg = <MT6765_POWER_DOMAIN_MM>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_CAM {
+                    reg = <MT6765_POWER_DOMAIN_CAM>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+                };
+            };
         };
 
         sysirq: intpol-controller@10200a80 {
