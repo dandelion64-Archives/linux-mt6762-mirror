@@ -222,6 +222,12 @@
             #clock-cells = <1>;
         };
 
+        mipi_rx_ana_csi0a: syscon@11c10000 {
+            compatible = "mediatek,mt6765-mipi0a", "syscon";
+            reg = <0 0x11c10000 0 0x1000>;
+            #clock-cells = <1>;
+        };
+
         // TODO: Add reset support
         watchdog: watchdog@10007000 {
             compatible = "mediatek,mt6589-wdt";
