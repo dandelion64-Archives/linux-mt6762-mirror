@@ -957,70 +957,87 @@
                     mediatek,infracfg = <&infracfg>;
                 };
 
-                power-domain@MT6765_POWER_DOMAIN_DISP {
-                    reg = <MT6765_POWER_DOMAIN_DISP>;
-                    #power-domain-cells = <0>;
-                    mediatek,infracfg = <&infracfg>;
-                };
-
                 power-domain@MT6765_POWER_DOMAIN_CONN {
                     reg = <MT6765_POWER_DOMAIN_CONN>;
                     #power-domain-cells = <0>;
                     mediatek,infracfg = <&infracfg>;
                 };
 
-                power-domain@MT6765_POWER_DOMAIN_MFG {
-                    reg = <MT6765_POWER_DOMAIN_MFG>;
+                power-domain@MT6765_POWER_DOMAIN_DPY {
+                    reg = <MT6765_POWER_DOMAIN_DPY>;
                     #power-domain-cells = <0>;
                     mediatek,infracfg = <&infracfg>;
                 };
 
-                power-domain@MT6765_POWER_DOMAIN_MFG_ASYNC {
+                power-domain@MT6765_POWER_DOMAIN_DISP {
+                    reg = <MT6765_POWER_DOMAIN_DISP>;
+                    #power-domain-cells = <0>;
+                    mediatek,infracfg = <&infracfg>;
+
+                    clocks = <&topckgen CLK_TOP_MM_SEL>,
+                             <&mmsys CLK_MM_SMI_COMMON>,
+                             <&mmsys CLK_MM_SMI_COMM0>,
+                             <&mmsys CLK_MM_SMI_COMM1>,
+                             <&mmsys CLK_MM_SMI_LARB0>;
+                    clock-names = "mm", "mm-0", "mm-1", "mm-2", "mm-3";
+
+                    power-domain@MT6765_POWER_DOMAIN_ISP {
+                        reg = <MT6765_POWER_DOMAIN_ISP>;
+                        #power-domain-cells = <0>;
+                        mediatek,infracfg = <&infracfg>;
+                        mediatek,smi = <&smi_common>;
+
+                        clocks = <&imgsys CLK_IMG_LARB2>,
+                                <&mmsys CLK_MM_SMI_IMG>;
+                        clock-names = "isp-0", "isp-1";
+                    };
+
+                    power-domain@MT6765_POWER_DOMAIN_CAM {
+                        reg = <MT6765_POWER_DOMAIN_CAM>;
+                        #power-domain-cells = <0>;
+                        mediatek,infracfg = <&infracfg>;
+                        mediatek,smi = <&smi_common>;
+
+                        clocks = <&camsys CLK_CAM_LARB3>,
+                                <&camsys CLK_CAM_DFP_VAD>,
+                                <&camsys CLK_CAM>,
+                                <&camsys CLK_CAM_CCU>,
+                                <&mmsys CLK_MM_SMI_CAM>;
+                        clock-names = "cam-0", "cam-1", "cam-2", "cam-3", "cam-4";
+                    };
+
+                    power-domain@MT6765_POWER_DOMAIN_VCODEC {
+                        reg = <MT6765_POWER_DOMAIN_VCODEC>;
+                        #power-domain-cells = <0>;
+                    };
+                };
+
+                power-domain@MT6765_POWER_DOMAIN_IFR {
+                    reg = <MT6765_POWER_DOMAIN_IFR>;
+                    #power-domain-cells = <0>;
+                };
+
+                mfg_async: power-domain@MT6765_POWER_DOMAIN_MFG_ASYNC {
                     reg = <MT6765_POWER_DOMAIN_MFG_ASYNC>;
                     #power-domain-cells = <0>;
-                    mediatek,infracfg = <&infracfg>;
-                };
+                    #address-cells = <1>;
+                    #size-cells = <0>;
 
-                power-domain@MT6765_POWER_DOMAIN_MFG_CORE0 {
-                    reg = <MT6765_POWER_DOMAIN_MFG_CORE0>;
-                    #power-domain-cells = <0>;
-                    mediatek,infracfg = <&infracfg>;
-                };
+                    power-domain@MT6765_POWER_DOMAIN_MFG {
+                        reg = <MT6765_POWER_DOMAIN_MFG>;
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        #power-domain-cells = <0>;
+                        mediatek,infracfg = <&infracfg>;
 
-                power-domain@MT6765_POWER_DOMAIN_ISP {
-                    reg = <MT6765_POWER_DOMAIN_ISP>;
-                    #power-domain-cells = <0>;
-                    mediatek,infracfg = <&infracfg>;
-                };
+                        clocks = <&topckgen CLK_TOP_MFG_SEL>;
+                        clock-names = "mfg";
 
-                power-domain@MT6765_POWER_DOMAIN_VDEC {
-                    reg = <MT6765_POWER_DOMAIN_VDEC>;
-                    #power-domain-cells = <0>;
-                    mediatek,infracfg = <&infracfg>;
-                };
-
-                power-domain@MT6765_POWER_DOMAIN_VENC {
-                    reg = <MT6765_POWER_DOMAIN_VENC>;
-                    #power-domain-cells = <0>;
-                    mediatek,infracfg = <&infracfg>;
-                };
-
-                power-domain@MT6765_POWER_DOMAIN_VCODEC {
-                    reg = <MT6765_POWER_DOMAIN_VCODEC>;
-                    #power-domain-cells = <0>;
-                    mediatek,infracfg = <&infracfg>;
-                };
-
-                power-domain@MT6765_POWER_DOMAIN_MM {
-                    reg = <MT6765_POWER_DOMAIN_MM>;
-                    #power-domain-cells = <0>;
-                    mediatek,infracfg = <&infracfg>;
-                };
-
-                power-domain@MT6765_POWER_DOMAIN_CAM {
-                    reg = <MT6765_POWER_DOMAIN_CAM>;
-                    #power-domain-cells = <0>;
-                    mediatek,infracfg = <&infracfg>;
+                        power-domain@MT6765_POWER_DOMAIN_MFG_CORE0 {
+                            reg = <MT6765_POWER_DOMAIN_MFG_CORE0>;
+                            #power-domain-cells = <0>;
+                        };
+                    };
                 };
             };
         };
