@@ -7,6 +7,7 @@
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/clock/mt6765-clk.h>
 #include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/gce/mt6765-gce.h>
 #include <dt-bindings/memory/mediatek,mt6765-m4u.h>
 #include <dt-bindings/phy/phy.h>
 #include <dt-bindings/thermal/thermal.h>
@@ -245,6 +246,10 @@
             reg = <0 0x14000000 0 0x1000>;
             interrupts = <GIC_SPI 227 IRQ_TYPE_LEVEL_LOW>;
             #clock-cells = <1>;
+
+            mboxes = <&gce 0 CMDQ_THR_PRIO_HIGHEST>,
+                     <&gce 1 CMDQ_THR_PRIO_HIGHEST>;
+            mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0 0x1000>;
         };
 
         mipi_rx_ana_csi0a: syscon@11c10000 {
@@ -363,6 +368,8 @@
 
             iommus = <&m4u M4U_PORT_DISP_OVL0>;
 
+            mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0xb000 0x1000>;
+
             status = "disabled";
         };
 
@@ -377,6 +384,8 @@
             power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
 
             iommus = <&m4u M4U_PORT_DISP_2L_OVL0>;
+
+            mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0xc000 0x1000>;
 
             status = "disabled";
         };
@@ -393,6 +402,8 @@
 
             iommus = <&m4u M4U_PORT_DISP_RDMA0>;
 
+            mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0xd000 0x1000>;
+
             status = "disabled";
         };
 
@@ -403,6 +414,8 @@
             interrupts = <GIC_SPI 220 IRQ_TYPE_LEVEL_LOW>;
 
             clocks = <&mmsys CLK_MM_DISP_COLOR0>;
+
+            mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0xf000 0x1000>;
 
             power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
 
@@ -416,6 +429,8 @@
             interrupts = <GIC_SPI 224 IRQ_TYPE_LEVEL_LOW>;
 
             clocks = <&mmsys CLK_MM_DISP_DITHER0>;
+
+            mediatek,gce-client-reg = <&gce SUBSYS_1401XXXX 0x3000 0x1000>;
 
             power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
 
@@ -456,6 +471,10 @@
 
             clocks = <&clk32k>;
 
+            mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
+            mediatek,gce-events = <CMDQ_EVENT_MUTEX0_STREAM_EOF>,
+                                  <CMDQ_EVENT_MUTEX1_STREAM_EOF>;
+
             power-domains = <&spm MT6765_POWER_DOMAIN_DISP>;
 
             status = "disabled";
@@ -475,6 +494,19 @@
             #phy-cells = <0>;
 
             status = "disabled";
+        };
+
+        gce: mailbox@10238000 {
+            compatible = "mediatek,mt6765-gce";
+            reg = <0 0x10238000 0 0x4000>;
+
+            interrupts = <GIC_SPI 154 IRQ_TYPE_LEVEL_LOW>,
+                         <GIC_SPI 155 IRQ_TYPE_LEVEL_LOW>;
+
+            #mbox-cells = <2>;
+
+            clocks = <&infracfg CLK_IFR_GCE>;
+            clock-names = "gce";
         };
 
         // TODO: Add reset support
