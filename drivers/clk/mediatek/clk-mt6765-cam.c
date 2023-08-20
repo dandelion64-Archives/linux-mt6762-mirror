@@ -33,9 +33,18 @@ static const struct mtk_gate cam_clks[] = {
 	GATE_CAM(CLK_CAM_CCU, "cam_ccu", "mm_ck", 12),
 };
 
+static u16 cam_rst_ofs[] = { 0xc };
+
+static const struct mtk_clk_rst_desc cam_resets = {
+	.version = MTK_RST_SIMPLE,
+	.rst_bank_ofs = cam_rst_ofs,
+	.rst_bank_nr = ARRAY_SIZE(cam_rst_ofs)
+};
+
 static const struct mtk_clk_desc cam_desc = {
 	.clks = cam_clks,
 	.num_clks = ARRAY_SIZE(cam_clks),
+	.rst_desc = &cam_resets,
 };
 
 static const struct of_device_id of_match_clk_mt6765_cam[] = {
