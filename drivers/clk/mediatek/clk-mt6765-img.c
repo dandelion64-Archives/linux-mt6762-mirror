@@ -29,9 +29,18 @@ static const struct mtk_gate img_clks[] = {
 	GATE_IMG(CLK_IMG_RSC, "img_rsc", "mm_ck", 5),
 };
 
+static u16 img_rst_ofs[] = { 0xc };
+
+static const struct mtk_clk_rst_desc img_resets = {
+	.version = MTK_RST_SIMPLE,
+	.rst_bank_ofs = img_rst_ofs,
+	.rst_bank_nr = ARRAY_SIZE(img_rst_ofs)
+};
+
 static const struct mtk_clk_desc img_desc = {
 	.clks = img_clks,
 	.num_clks = ARRAY_SIZE(img_clks),
+	.rst_desc = &img_resets,
 };
 
 static const struct of_device_id of_match_clk_mt6765_img[] = {
