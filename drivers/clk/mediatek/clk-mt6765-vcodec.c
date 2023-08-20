@@ -28,9 +28,18 @@ static const struct mtk_gate venc_clks[] = {
 	GATE_VENC(CLK_VENC_SET3_VDEC, "venc_set3_vdec", "mm_ck", 12),
 };
 
+static u16 venc_rst_ofs[] = { 0xc };
+
+static const struct mtk_clk_rst_desc venc_resets = {
+	.version = MTK_RST_SIMPLE,
+	.rst_bank_ofs = venc_rst_ofs,
+	.rst_bank_nr = ARRAY_SIZE(venc_rst_ofs)
+};
+
 static const struct mtk_clk_desc venc_desc = {
 	.clks = venc_clks,
 	.num_clks = ARRAY_SIZE(venc_clks),
+	.rst_desc = &venc_resets,
 };
 
 static const struct of_device_id of_match_clk_mt6765_vcodec[] = {
