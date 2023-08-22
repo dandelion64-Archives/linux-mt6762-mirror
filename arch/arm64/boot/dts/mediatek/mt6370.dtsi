@@ -1,0 +1,120 @@
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/leds/common.h>
+#include <dt-bindings/iio/adc/mediatek,mt6370_adc.h>
+#include <dt-bindings/usb/pd.h>
+
+&i2c5 {
+    status = "okay";
+
+    pmic@34 {
+        compatible = "mediatek,mt6370";
+        reg = <0x34>;
+        wakeup-source;
+        interrupts-extended = <&pio 3 IRQ_TYPE_LEVEL_LOW>;
+        interrupt-controller;
+        #interrupt-cells = <1>;
+
+        mt6370_adc: adc {
+            compatible = "mediatek,mt6370-adc";
+            #io-channel-cells = <1>;
+        };
+
+        mt6370_backlight: backlight {
+            compatible = "mediatek,mt6370-backlight";
+
+            status = "disabled";
+
+            mediatek,bled-channel-use = /bits/ 8 <15>;
+        };
+
+        mt6370_charger: charger {
+            compatible = "mediatek,mt6370-charger";
+            interrupts = <68>, <48>, <6>;
+            interrupt-names = "uvp_d_evt", "attach_i", "mivr";
+            io-channels = <&mt6370_adc MT6370_CHAN_IBUS>;
+
+            status = "disabled";
+
+            mt6370_otg_vbus: usb-otg-vbus-regulator {
+                regulator-name = "mt6370-usb-otg-vbus";
+                regulator-min-microvolt = <4350000>;
+                regulator-max-microvolt = <5800000>;
+                regulator-min-microamp = <500000>;
+                regulator-max-microamp = <3000000>;
+            };
+        };
+
+        mt6370_indicator: indicator {
+            compatible = "mediatek,mt6370-indicator";
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            status = "disabled";
+        };
+
+        mt6370_flashlight: flashlight {
+            compatible = "mediatek,mt6370-flashlight";
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            status = "disabled";
+
+            led@0 {
+                reg = <0>;
+                led-sources = <0>;
+                function = LED_FUNCTION_FLASH;
+                color = <LED_COLOR_ID_WHITE>;
+                function-enumerator = <1>;
+                led-max-microamp = <200000>;
+                flash-max-microamp = <500000>;
+                flash-max-timeout-us = <1248000>;
+            };
+
+            led@1 {
+                reg = <1>;
+                led-sources = <1>;
+                function = LED_FUNCTION_FLASH;
+                color = <LED_COLOR_ID_WHITE>;
+                function-enumerator = <2>;
+                led-max-microamp = <200000>;
+                flash-max-microamp = <500000>;
+                flash-max-timeout-us = <1248000>;
+            };
+        };
+
+        tcpc {
+            compatible = "mediatek,mt6370-tcpc";
+            interrupts-extended = <&pio 4 IRQ_TYPE_LEVEL_LOW>;
+
+            status = "disabled";
+        };
+
+        regulators {
+            mt6370_dsvbst_reg: dsvbst {
+                regulator-name = "mt6370-dsv-vbst";
+                regulator-min-microvolt = <4000000>;
+                regulator-max-microvolt = <6200000>;
+            };
+
+            mt6370_dsvpos_reg: dsvpos {
+                regulator-name = "mt6370-dsv-vpos";
+                regulator-min-microvolt = <4000000>;
+                regulator-max-microvolt = <6000000>;
+                regulator-boot-on;
+            };
+
+            mt6370_dsvneg_reg: dsvneg {
+                regulator-name = "mt6370-dsv-vneg";
+                regulator-min-microvolt = <4000000>;
+                regulator-max-microvolt = <6000000>;
+                regulator-boot-on;
+            };
+
+            mt6370_vibldo_reg: vibldo {
+                regulator-name = "mt6370-vib-ldo";
+                regulator-min-microvolt = <1600000>;
+                regulator-max-microvolt = <4000000>;
+            };
+        };
+	};
+};
