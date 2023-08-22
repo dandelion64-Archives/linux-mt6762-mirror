@@ -1,0 +1,103 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Device Tree Source for Nokia 3.1 Plus (ROO)
+ *
+ * Copyright (c) 2023 Arseniy Velikanov <adomerlee@gmail.com>
+ */
+
+/dts-v1/;
+
+#include "mt6765.dtsi"
+#include "mt6765-bl-quirks.dtsi"
+#include "mt6357.dtsi"
+#include "mt6370.dtsi"
+
+/ {
+    model = "Nokia 3.1 Plus";
+    compatible = "nokia,roo", "mediatek,mt6762", "mediatek,mt6765";
+
+    haptics {
+        compatible = "regulator-haptic";
+        haptic-supply = <&mt6357_vibr_reg>;
+        max-microvolt = <2300000>;
+        min-microvolt = <3200000>;
+    };
+
+    /* The following are required by stock bootloader to merge with minimal DTBO */
+    gpio@10005000 {
+        linux,phandle = <0xdead>;
+        phandle = <0xdead>;
+    };
+    __symbols__ {
+        gpio = "/gpio@10005000";
+    };
+};
+
+&pwrap {
+    status = "okay";
+};
+
+&usb2 {
+    status = "okay";
+
+    usb_con: connector {
+        compatible = "usb-b-connector";
+        type = "micro";
+    };
+};
+
+&u2phy {
+    status = "okay";
+};
+
+&i2c1 {
+    status = "okay";
+};
+
+&mt6370_backlight {
+    status = "okay";
+
+    max-brightness = <1024>;
+    default-brightness = <1024>;
+};
+
+
+&mt6370_flashlight {
+    status = "okay";
+};
+
+&mmc0 {
+    status = "disabled"; // Broken for now
+
+    vmmc-supply = <&mt6357_vemc_reg>;
+    vqmmc-supply = <&mt6357_vio18_reg>;
+
+    bus-width = <8>;
+    max-frequency = <200000000>;
+    non-removable;
+    cap-mmc-hw-reset;
+    cap-mmc-highspeed;
+    //mmc-ddr-1_8v;
+    //mmc-hs200-1_8v;
+    //mmc-hs400-1_8v;
+};
+
+&mmc1 {
+    status = "okay";
+
+    vmmc-supply = <&mt6357_vmch_reg>;
+    vqmmc-supply = <&mt6357_vmc_reg>;
+
+    bus-width = <4>;
+    max-frequency = <20000000>;
+    cap-sd-highspeed;
+    sd-uhs-sdr12;
+    sd-uhs-sdr25;
+    sd-uhs-sdr50;
+    sd-uhs-sdr104;
+    sd-uhs-ddr50;
+};
+
+&uart0 {
+    status = "okay";
+};
