@@ -9,6 +9,10 @@
 &pwrap {
 	mt6357_pmic: pmic {
 		compatible = "mediatek,mt6357";
+		interrupt-controller;
+		interrupt-parent = <&pio>;
+		interrupts = <144 IRQ_TYPE_LEVEL_HIGH>;
+		#interrupt-cells = <2>;
 
 		regulators {
 			mt6357_vproc_reg: buck-vproc {
@@ -207,6 +211,7 @@
 				regulator-min-microvolt = <1100000>;
 				regulator-max-microvolt = <1200000>;
 				regulator-enable-ramp-delay = <3300>;
+				regulator-always-on;
 			};
 
 			mt6357_vmc_reg: ldo-vmc {
